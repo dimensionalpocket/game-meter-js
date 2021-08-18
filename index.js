@@ -1,3 +1,3 @@
-import { Meter } from './src/Meter.js'
+import { GameMeter } from './src/GameMeter.js'
 
-export default Meter
+export default GameMeter

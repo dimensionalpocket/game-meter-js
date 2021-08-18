@@ -4,11 +4,11 @@
 
 import { expect } from '@dimensionalpocket/development'
 
-import Meter from '../index.js'
-import { Meter as MeterFromSrc } from '../src/Meter.js'
+import GameMeter from '../index.js'
+import { GameMeter as GameMeterFromSrc } from '../src/GameMeter.js'
 
 describe('main require', function () {
-  it('exports Meter from src', function () {
-    expect(Meter).to.equal(MeterFromSrc)
+  it('exports GameMeter from src', function () {
+    expect(GameMeter).to.equal(GameMeterFromSrc)
   })
 })
