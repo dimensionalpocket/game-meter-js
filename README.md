@@ -1,17 +1,23 @@
 # @dimensionalpocket/game-meter
 
-A reactive Meter class for Javascript games. Supports minimum and maximum values, and regeneration over time.
+A reactive Meter class for Javascript games.
+
+## Features
+
+* Minimum and maximum amounts
+* Regeneration over time
+* Tick-based regeneration
 
 ## Usage
 
 ```javascript
-var hp = new GameMeter()
+var hp = new GameMeter({
+  minimum: 0.0,
+  maximum: 100.0,
+  regeneration: 1.0 // 1 HP per second
+})
 
-hp.minimum = 0.0
-hp.maximum = 100.0
-hp.regeneration = 1.0 // 1 HP per second
-
-hp.set(hp.maximum / 5)
+hp.set(hp.maximum / 2)
 
 assert(hp.current() == 50.0)
 
@@ -29,14 +35,13 @@ assert(hp.current() == 80.0)
 assert(hp.current() == 100.0)
 ```
 
-## Properties
-
-* `minimum`
-* `maximum`
-* `regeneration` - how many points to regenerate per second. Can be negative for a "decay" effect.
-
 ## Methods
 
-* `set(value)` - sets the meter to an absolute value. Will be clamped based on minimum/maximum.
-* `increment(value)` - regenerates the meter then adds/subtracts from the current value.
-* `current([timestamp])` - returns the current meter value. Accepts an optional `timestamp` argument (default `Date.now()`).
+Most methods take an optional `timestamp` argument which is used to regenerate the meter before applying changes or returning amounts. The `timestamp` argument defaults to current time.
+
+* `set(amount)` - sets the meter to an absolute amount. Will be clamped based on minimum/maximum.
+* `setRegeneration(amount, [timestamp])` - changes regeneration amount.
+* `setTickDuration(duration, [timestamp])` - sets the tick duration. Default is 1 ms (the same as no tick).
+* `increment(amount, [timestamp])` - adds/subtracts from the current value.
+* `current([timestamp])` - returns the current meter value.
+* `regenerate([timestamp])` - regenerates the meter based on time passed after last update.

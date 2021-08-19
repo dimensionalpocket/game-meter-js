@@ -1,5 +1,5 @@
 {
-  "name": "@dimensionalpocket/meter",
+  "name": "@dimensionalpocket/game-meter",
   "version": "0.0.0",
   "description": "A reactive Meter class for Javascript games.",
   "main": "index.js",
