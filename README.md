@@ -1,5 +1,7 @@
 # @dimensionalpocket/game-meter
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/dimensionalpocket/game-meter-js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dimensionalpocket/game-meter-js/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/dimensionalpocket/game-meter-js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dimensionalpocket/game-meter-js/context:javascript)
+
 A Meter class for Javascript games.
 
 ## Features
