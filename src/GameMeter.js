@@ -8,7 +8,7 @@ export class GameMeter {
    * @param {number} [opts.minimum] - Minimum amount. Defaults to 0.
    * @param {number} [opts.maximum] - Maximum amount. Defaults to 1.0.
    * @param {number} [opts.current] - Starting amount. Defaults to 0.
-   * @param {number} [opts.regeneration] - Amount of meter to regenerate per second. Can be negative. Defaults to 0.
+   * @param {number} [opts.regeneration] - Amount of meter to regenerate per second. Can also be zero or negative. Defaults to 0.
    * @param {number} [opts.timestamp] - Timestamp the meter starts at. Defaults to current timestamp.
    * @param {number} [opts.tick] - Tick duration in milliseconds. Defaults to 1.
    */
@@ -22,14 +22,16 @@ export class GameMeter {
     this.set(current)
 
     /**
-     * Amount of meter to regenerate per second. Can be negative.
+     * Amount of meter to regenerate per second.
+     * Can also be zero or negative.
      * @type {number}
      * @private
      */
     this._regeneration = regeneration
 
     /**
-     * Timestamp the meter last updated at.
+     * Timestamp the meter was last updated at.
+     * Only used with regeneration.
      * @type {number}
      * @private
      */
@@ -37,6 +39,7 @@ export class GameMeter {
 
     /**
      * Tick duration in ms. Must be >= 1.
+     * Only used with regeneration.
      * @type {number}
      * @private
      */
@@ -51,35 +54,41 @@ export class GameMeter {
     /**
      * Current amount of meter.
      * @type {number}
-     * @private
      */
-    this._current = this.clamp(amount)
+    this.amount = this.clamp(amount)
   }
 
   /**
    * Returns the current amount of meter after regeneration.
-   * @param {number} timestamp - timestamp as integer
+   * @param {number} [timestamp] - timestamp as integer
    */
   current (timestamp = Date.now()) {
     this.regenerate(timestamp)
-    return this._current
+    return this.amount
   }
 
   /**
    * Sets a new regeneration amount for this meter.
-   * @param {number} regeneration - Amount per second to regenerate. Can be negative.
+   * @param {number} regeneration - Amount per second to regenerate. Can also be zero or negative.
    * @param {number} [timestamp]
    */
   setRegeneration (regeneration, timestamp = Date.now()) {
-    // First regenerate using the old values before applying the new amount.
-    this.regenerate(timestamp)
+    var oldRegeneration = this._regeneration
+    if (oldRegeneration !== 0) {
+      // First regenerate using the previous amount before applying the new one.
+      this.regenerate(timestamp)
+    } else if (regeneration !== 0) {
+      // In this case, regeneration is changing from zero, so we assign a new timestamp.
+      // (Timestamps are only updated when regeneration is not zero -- see #regenerate).
+      this._timestamp = timestamp
+    }
 
     this._regeneration = regeneration
   }
 
   /**
    * Sets the tick duration in milliseconds.
-   * @param {number} duration - Duration in milliseconds.
+   * @param {number} duration - Duration in milliseconds. Must be >= 1.
    * @param {number} [timestamp]
    */
   setTickDuration (duration, timestamp = Date.now()) {
@@ -106,7 +115,8 @@ export class GameMeter {
     // No time change, nothing to do.
     if (timestamp === oldTimestamp) return 0
 
-    // If rewinding time, just update the timestamp and do not regenerate.
+    // If rewinding time, just update the timestamp and skip regeneration.
+    // TODO: perhaps support rewinding time in the future? (Impacts tick calculations.)
     var delta = timestamp - oldTimestamp
     if (delta < 0) {
       this._timestamp = timestamp
@@ -119,10 +129,11 @@ export class GameMeter {
     // If the time difference is shorter than a single tick, do not regenerate.
     if (ticks < 1) return 0
 
-    // Updates timestamp subtracting the incomplete tick duration.
+    // Updates timestamp subtracting the incomplete tick duration,
+    // so that the new timestamp increase is a multiple of the tick duration.
     this._timestamp = timestamp - (delta % tick)
 
-    var oldCurrent = this._current
+    var oldCurrent = this.amount
 
     // Skip if meter is already filled or depleted.
     if (
@@ -136,19 +147,18 @@ export class GameMeter {
 
     var newCurrent = this.clamp(oldCurrent + gain)
 
-    this._current = newCurrent
+    this.amount = newCurrent
 
     // Returns the gain after clamping.
     return newCurrent - oldCurrent
   }
 
   /**
-   * Clamps `value` between this meter's minimum and maximum.
+   * Clamps a value between the meter's minimum and maximum.
    * @param {number} value - value to clamp
    * @return {number} - adjusted value
    */
   clamp (value) {
-    // https://www.webtips.dev/webtips/javascript/how-to-clamp-numbers-in-javascript
     return Math.min(Math.max(value, this.minimum), this.maximum)
   }
 }
