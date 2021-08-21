@@ -92,6 +92,26 @@ describe('GameMeter', function () {
     })
   })
 
+  describe('#increment', function () {
+    before(function () {
+      this.meter1 = new GameMeter({ maximum: 100.0, current: 50.0, regeneration: 1.0, timestamp: 1000 })
+      this.meter2 = new GameMeter({ maximum: 100.0, current: 95.0, regeneration: 1.0 })
+      this.clock.tick(1000)
+      this.result1 = this.meter1.increment(10.0, 2000)
+      this.result2 = this.meter2.increment(10.0)
+    })
+
+    it('regenerates and increments', function () {
+      expect(this.meter1.amount).to.eq(51.0 + 10.0)
+      expect(this.meter2.amount).to.eq(100.0) // maxed out
+    })
+
+    it('returns the incremented amount', function () {
+      expect(this.result1).to.eq(10.0)
+      expect(this.result2).to.eq(4.0) // increment before maxing out
+    })
+  })
+
   describe('#setRegeneration', function () {
     context('when previous regeneration is zero', function () {
       before(function () {
