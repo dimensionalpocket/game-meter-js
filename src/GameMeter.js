@@ -68,6 +68,23 @@ export class GameMeter {
   }
 
   /**
+   * Increments or decrements the meter. Returns the changed amount.
+   * @param {number} amount - Amount to increment. Can be negative.
+   * @param {number} [timestamp]
+   * @return {number}
+   */
+  increment (amount, timestamp = Date.now()) {
+    this.regenerate(timestamp)
+
+    var oldAmount = this.amount
+    var newAmount = this.clamp(oldAmount + amount)
+
+    this.amount = newAmount
+
+    return newAmount - oldAmount
+  }
+
+  /**
    * Sets a new regeneration amount for this meter.
    * @param {number} regeneration - Amount per second to regenerate. Can also be zero or negative.
    * @param {number} [timestamp]
@@ -133,24 +150,24 @@ export class GameMeter {
     // so that the new timestamp increase is a multiple of the tick duration.
     this._timestamp = timestamp - (delta % tick)
 
-    var oldCurrent = this.amount
+    var oldAmount = this.amount
 
     // Skip if meter is already filled or depleted.
     if (
-      (regeneration > 0 && oldCurrent >= this.maximum) ||
-      (regeneration < 0 && oldCurrent <= this.minimum)
+      (regeneration > 0 && oldAmount >= this.maximum) ||
+      (regeneration < 0 && oldAmount <= this.minimum)
     ) return 0
 
     // Gain is based on how many ticks passed.
     // Expression in brackets is "regeneration per tick".
     var gain = (regeneration * tick / 1000) * ticks
 
-    var newCurrent = this.clamp(oldCurrent + gain)
+    var newAmount = this.clamp(oldAmount + gain)
 
-    this.amount = newCurrent
+    this.amount = newAmount
 
     // Returns the gain after clamping.
-    return newCurrent - oldCurrent
+    return newAmount - oldAmount
   }
 
   /**

@@ -1,6 +1,6 @@
 # @dimensionalpocket/game-meter
 
-![build](https://github.com/dimensionalpocket/game-meter-js/actions/workflows/node.js.yml/badge.svg) [![Total alerts](https://img.shields.io/lgtm/alerts/g/dimensionalpocket/game-meter-js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dimensionalpocket/game-meter-js/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/dimensionalpocket/game-meter-js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dimensionalpocket/game-meter-js/context:javascript)
+[![build](https://github.com/dimensionalpocket/game-meter-js/actions/workflows/node.js.yml/badge.svg)](https://github.com/dimensionalpocket/game-meter-js/actions/workflows/node.js.yml) [![Total alerts](https://img.shields.io/lgtm/alerts/g/dimensionalpocket/game-meter-js.svg)](https://lgtm.com/projects/g/dimensionalpocket/game-meter-js/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/dimensionalpocket/game-meter-js.svg)](https://lgtm.com/projects/g/dimensionalpocket/game-meter-js/context:javascript)
 
 A Meter class for Javascript games.
 
@@ -45,8 +45,8 @@ Most methods take an optional `timestamp` argument which is used to regenerate t
 * `set(amount)` - sets the meter to an absolute amount. Will be clamped based on minimum/maximum.
 * `setRegeneration(amount, [timestamp])` - changes regeneration amount.
 * `setTickDuration(duration, [timestamp])` - sets the tick duration. Default is 1 ms (the same as no tick).
-* `increment(amount, [timestamp])` - adds/subtracts from the current amount.
-* `current([timestamp])` - returns the current meter amount, after regeneration.
+* `increment(amount, [timestamp])` - adds to (or subtracts from) the current amount.
+* `current([timestamp])` - returns the current meter amount after regeneration.
 * `regenerate([timestamp])` - regenerates the meter based on time passed after last update.
 
 ## Properties
