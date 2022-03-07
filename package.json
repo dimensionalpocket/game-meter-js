@@ -22,8 +22,8 @@
   "homepage": "https://github.com/dimensionalpocket/game-meter-js#readme",
   "dependencies": {},
   "devDependencies": {
-    "@dimensionalpocket/development": "github:dimensionalpocket/development-js#0.4.2",
-    "@dimensionalpocket/release": "github:dimensionalpocket/release-js#0.2.3"
+    "@dimensionalpocket/development": "github:dimensionalpocket/development-js#0.5.2",
+    "@dimensionalpocket/release": "github:dimensionalpocket/release-js#0.2.4"
   },
   "babel": {
     "extends": "./node_modules/@dimensionalpocket/development/babel"
