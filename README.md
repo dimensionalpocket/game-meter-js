@@ -54,3 +54,7 @@ Most methods take an optional `timestamp` argument which is used to regenerate t
 * `minimum`
 * `maximum`
 * `amount` - the current amount, before regeneration.
+
+## License
+
+MIT

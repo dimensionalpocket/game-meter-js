@@ -24,6 +24,7 @@ export class GameMeter {
     /**
      * Amount of meter to regenerate per second.
      * Can also be zero or negative.
+     *
      * @type {number}
      * @private
      */
@@ -32,6 +33,7 @@ export class GameMeter {
     /**
      * Timestamp the meter was last updated at.
      * Only used with regeneration.
+     *
      * @type {number}
      * @private
      */
@@ -40,6 +42,7 @@ export class GameMeter {
     /**
      * Tick duration in ms. Must be >= 1.
      * Only used with regeneration.
+     *
      * @type {number}
      * @private
      */
@@ -48,11 +51,13 @@ export class GameMeter {
 
   /**
    * Sets the current amount.
+   *
    * @param {number} amount
    */
   set (amount) {
     /**
      * Current amount of meter.
+     *
      * @type {number}
      */
     this.amount = this.clamp(amount)
@@ -60,6 +65,7 @@ export class GameMeter {
 
   /**
    * Returns the current amount of meter after regeneration.
+   *
    * @param {number} [timestamp] - timestamp as integer
    */
   current (timestamp = Date.now()) {
@@ -69,6 +75,7 @@ export class GameMeter {
 
   /**
    * Increments or decrements the meter. Returns the changed amount.
+   *
    * @param {number} amount - Amount to increment. Can be negative.
    * @param {number} [timestamp]
    * @return {number}
@@ -86,11 +93,13 @@ export class GameMeter {
 
   /**
    * Sets a new regeneration amount for this meter.
+   *
    * @param {number} regeneration - Amount per second to regenerate. Can also be zero or negative.
    * @param {number} [timestamp]
    */
   setRegeneration (regeneration, timestamp = Date.now()) {
     var oldRegeneration = this._regeneration
+
     if (oldRegeneration !== 0) {
       // First regenerate using the previous amount before applying the new one.
       this.regenerate(timestamp)
@@ -105,6 +114,7 @@ export class GameMeter {
 
   /**
    * Sets the tick duration in milliseconds.
+   *
    * @param {number} duration - Duration in milliseconds. Must be >= 1.
    * @param {number} [timestamp]
    */
@@ -119,6 +129,7 @@ export class GameMeter {
 
   /**
    * Regenerates the meter based on a new timestamp.
+   *
    * @param {number} [timestamp]
    * @return {number} - Amount of meter regenerated.
    */
@@ -172,6 +183,7 @@ export class GameMeter {
 
   /**
    * Clamps a value between the meter's minimum and maximum.
+   *
    * @param {number} value - value to clamp
    * @return {number} - adjusted value
    */
